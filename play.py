@@ -31,14 +31,14 @@ env = gymnasium.make("LunarLander-v2", render_mode = "human")
 def play():
   observation, _ = env.reset()
   while True:
-    # with torch.no_grad():
-    #         action = np.argmax(NN(observation).numpy(), axis=0)
-    new_observation, reward, terminated, truncated, info = env.step(env.action_space.sample())
+    with torch.no_grad():
+            action = np.argmax(NN(observation).numpy(), axis=0)
+    new_observation, reward, terminated, truncated, info = env.step(action)
     done = terminated or truncated
     observation = new_observation
     if done: observation, info = env.reset()
 
 
-# Q = q_NN(env)
-# Q.load_state_dict(torch.load(r"E:\My Drive\Uni\Uni\AAS\Project\lander0.43045054130132243RE.pt"))
+Q = q_NN(env)
+Q.load_state_dict(torch.load("your path.pt"))
 play()
